@@ -9,14 +9,13 @@ namespace ExpiProject.GameManager
     public class GameManager : MonoBehaviour
     {
         public static GameManager instance;
-
-        [Header("UI References")] [SerializeField]
-        private GameObject pausePanelUI;
-
-        [SerializeField] private Button pauseButtonUI;
-        [SerializeField] private GameObject playerControllerUI;
+        
+        [Header("UI References")]
+        [SerializeField] private GameObject screenUI;
         [SerializeField] private Button interactButton;
+        [SerializeField] private Button pauseButtonUI;
 
+        
         [Header("Game References")] [SerializeField]
         private int level;
 
@@ -31,8 +30,12 @@ namespace ExpiProject.GameManager
         private void Start()
         {
             Transition.instance.FadeOut();
+            Pause.instance.ResumeGame();
+            
+            pauseButtonUI.onClick.AddListener(() => Pause.instance.PauseGame());
         }
 
+        #region NPC
         public void NpcTriggerArea(int npcID)
         {
             foreach (var npc in npcObjects)
@@ -49,5 +52,6 @@ namespace ExpiProject.GameManager
             interactButton.interactable = false;
             interactButton.onClick.RemoveAllListeners();
         }
+        #endregion
     }
 }
