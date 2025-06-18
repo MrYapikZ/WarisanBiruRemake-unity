@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4fe180e9cc48c9b648383e788705cd, type: 3}
+  m_Name: PuzzleAssets
+  m_EditorClassIdentifier: 
+  puzzleAssets:
+  - pieces:
+    - {fileID: 21300000, guid: 290110810896a24449e0ad773b1f5118, type: 3}
+    - {fileID: 21300000, guid: ae2edba461494ff4dae856a0f91045ac, type: 3}
+    - {fileID: 21300000, guid: 7a2904ed5dc613742b76671bc952cff5, type: 3}
+    - {fileID: 21300000, guid: f9192c174b06c3a42abf05547d97a765, type: 3}
+    background:
+    - {fileID: 21300000, guid: bfbab9895047d7e4bb86690a20d64578, type: 3}
+    - {fileID: 21300000, guid: 5c5b2c95472d06341aeb802d949cb2fa, type: 3}
+    - {fileID: 21300000, guid: 7b3a4f44c4d06ab43b69d29328f63ec1, type: 3}
+    - {fileID: 21300000, guid: 8946acd6d0b0ae24597b1d9c0ba7e9d2, type: 3}

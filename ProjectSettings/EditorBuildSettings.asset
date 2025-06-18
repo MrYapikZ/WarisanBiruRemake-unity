@@ -10,7 +10,10 @@ EditorBuildSettings:
     guid: 8d542149d728448598829e4e9790212b
   - enabled: 1
     path: Assets/Scenes/LevelSelection.unity
-    guid: eeee1640f69484d81b860f26782d02cc
+    guid: b9abf82cba9af44f492c2355489932c4
+  - enabled: 1
+    path: Assets/Scenes/PuzzleMinigame.unity
+    guid: 9420d27bbd9ff4a22a7d504fe69d6b08
   - enabled: 1
     path: Assets/Scenes/Levels/Level1.unity
     guid: d69bb62cd37ef4a0f81c368cb629dc8d

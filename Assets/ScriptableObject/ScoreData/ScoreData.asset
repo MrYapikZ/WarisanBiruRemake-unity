@@ -15,4 +15,4 @@ MonoBehaviour:
   lvlScores:
   - name: Level1
     isGameFinished: 0
-    quizPoint: 01000000
+    quizPoint: 01010101

@@ -21,8 +21,8 @@ namespace ExpiProject.GameManager
         [SerializeField] private Button pauseButtonUI;
         [SerializeField] private TextMeshProUGUI scoreText;
 
-        [Header("Game References")] [SerializeField]
-        private int level;
+        [Header("Game References")]
+        public int level;
 
         [SerializeField] private ScoreDataScriptableObject scoreData;
 
@@ -63,6 +63,7 @@ namespace ExpiProject.GameManager
 
         private void OpenPuzzle()
         {
+            screenUI.SetActive(false);
             var mainCamera = Camera.main;
             if (mainCamera != null) mainCamera.enabled = false;
             SceneManager.LoadScene("PuzzleMinigame", LoadSceneMode.Additive);
