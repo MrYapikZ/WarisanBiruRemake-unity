@@ -14,17 +14,24 @@ namespace ExpiProject.Others
             instance = this;
         }
 
-        public void FadeIn(System.Action callback = null) => StartCoroutine(FadeInCoroutine(callback));
-        public void FadeOut(System.Action callback = null) => StartCoroutine(FadeOutCoroutine(callback));
-        
-        private IEnumerator FadeInCoroutine(System.Action callback = null)
+        public void FadeIn(Action callback = null)
+        {
+            StartCoroutine(FadeInCoroutine(callback));
+        }
+
+        public void FadeOut(Action callback = null)
+        {
+            StartCoroutine(FadeOutCoroutine(callback));
+        }
+
+        private IEnumerator FadeInCoroutine(Action callback = null)
         {
             animator.SetTrigger("FadeIn");
             yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
             callback?.Invoke();
         }
-        
-        private IEnumerator FadeOutCoroutine(System.Action callback = null)
+
+        private IEnumerator FadeOutCoroutine(Action callback = null)
         {
             animator.SetTrigger("FadeOut");
             yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);

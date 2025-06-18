@@ -33,35 +33,36 @@ namespace FloxyDev.DialogueSystem
         [SerializeField] private bool typingPerCharacter;
         [SerializeField] private bool enableSkip;
 
-        [Header("Optional")] [SerializeField, Tooltip("Optional")]
+        [Header("Optional")] [SerializeField] [Tooltip("Optional")]
         private TextMeshProUGUI dialogueHistoryText;
 
-        [SerializeField, Tooltip("If there is an option")]
+        [SerializeField] [Tooltip("If there is an option")]
         private GameObject choicesPanel;
 
-        [SerializeField, Tooltip("If there is an option")]
+        [SerializeField] [Tooltip("If there is an option")]
         private Button choiceButtonPrefab;
 
-        private DialogueActivator _dialogueActivator;
-        private Dictionary<string, bool> _dialogueConditions = new Dictionary<string, bool>();
-        private Button _choiceButton;
-        private int _dialogueIndex;
-        private int _selectedChoice;
-        private bool _isTyping;
-        private bool _isSkipPressed;
-        private readonly List<string> _dialogueHistory = new List<string>();
-        private ExpressionPerActor _actorExpressionRight;
+        private readonly List<string> _dialogueHistory = new();
         private ExpressionPerActor _actorExpressionLeft;
-        private int _currentFrameRight;
-        private float _timerRight;
+        private ExpressionPerActor _actorExpressionRight;
+        private Button _choiceButton;
         private int _currentFrameLeft;
-        private float _timerLeft;
+        private int _currentFrameRight;
+
+        private DialogueActivator _dialogueActivator;
+        private Dictionary<string, bool> _dialogueConditions = new();
+        private int _dialogueIndex;
+        private bool _isSkipPressed;
+        private bool _isTyping;
         private CinemachineBasicMultiChannelPerlin _noiseProfile;
-        private Coroutine _shakeCoroutine;
         private Transform _originalFollowTarget;
-        private Vector3 _originalPosition;
         private float _originalOrtho;
+        private Vector3 _originalPosition;
+        private int _selectedChoice;
+        private Coroutine _shakeCoroutine;
         private bool _stopCamEffect;
+        private float _timerLeft;
+        private float _timerRight;
 
         private void Awake()
         {
@@ -115,56 +116,53 @@ namespace FloxyDev.DialogueSystem
                 _noiseProfile.AmplitudeGain = 0f;
                 _noiseProfile.FrequencyGain = 0f;
             }
+
             if (_dialogueIndex < _dialogueActivator.dialogueLines.Count)
             {
-                DialogueLine line = _dialogueActivator.dialogueLines[_dialogueIndex];
+                var line = _dialogueActivator.dialogueLines[_dialogueIndex];
                 if (line.actionEvent.isActionEvent)
                 {
                     line.actionEvent.onDialogueEvent?.Invoke();
 
-                    for (int i = 0; i < line.actionEvent.cameraEffects.Count; i++)
-                    {
+                    for (var i = 0; i < line.actionEvent.cameraEffects.Count; i++)
                         switch (line.actionEvent.cameraEffects[i].cameraAction)
                         {
-                            case (CameraAction.None):
+                            case CameraAction.None:
                                 break;
-                            case (CameraAction.Shake):
+                            case CameraAction.Shake:
                                 ShakeCamera(line.actionEvent.cameraEffects[i].effectDuration,
                                     line.actionEvent.cameraEffects[i].isLoop);
                                 break;
-                            case (CameraAction.Flash):
+                            case CameraAction.Flash:
                                 Flash(line.actionEvent.cameraEffects[i].effectDuration,
                                     line.actionEvent.cameraEffects[i].effectAmount,
                                     line.actionEvent.cameraEffects[i].effectColor,
                                     line.actionEvent.cameraEffects[i].isLoop);
                                 break;
-                            case (CameraAction.ZoomIn):
+                            case CameraAction.ZoomIn:
                                 ZoomToTarget(line.actionEvent.cameraEffects[i].target,
                                     line.actionEvent.cameraEffects[i].effectAmount,
                                     line.actionEvent.cameraEffects[i].effectDuration);
                                 break;
-                            case (CameraAction.ZoomOut):
+                            case CameraAction.ZoomOut:
                                 ZoomToDefault(line.actionEvent.cameraEffects[i].effectDuration);
                                 break;
-                            case (CameraAction.FadeIn):
+                            case CameraAction.FadeIn:
                                 DipToBlack(line.actionEvent.cameraEffects[i].effectDuration,
                                     line.actionEvent.cameraEffects[i].effectColor);
                                 break;
-                            case (CameraAction.FadeOut):
+                            case CameraAction.FadeOut:
                                 DipToDefault(line.actionEvent.cameraEffects[i].effectDuration,
                                     line.actionEvent.cameraEffects[i].effectColor);
                                 break;
                         }
-                    }
 
-                    for (int i = 0; i < line.actionEvent.actorInScenePosition.Count; i++)
-                    {
+                    for (var i = 0; i < line.actionEvent.actorInScenePosition.Count; i++)
                         MoveActor(line.actionEvent.actorInScenePosition[i].actorGameObject,
                             line.actionEvent.actorInScenePosition[i].actorStartPosition,
                             line.actionEvent.actorInScenePosition[i].actorEndPosition,
                             line.actionEvent.actorInScenePosition[i].moveSpeed,
                             line.actionEvent.actorInScenePosition[i].useInScenePosition);
-                    }
                 }
 
                 ShowDialogueLine(line);
@@ -178,10 +176,7 @@ namespace FloxyDev.DialogueSystem
         private void ShowDialogueLine(DialogueLine line)
         {
             StartCoroutine(TypeDialogue(line));
-            if (line.textEvent.voiceClip != null)
-            {
-                audioSource.PlayOneShot(line.textEvent.voiceClip);
-            }
+            if (line.textEvent.voiceClip != null) audioSource.PlayOneShot(line.textEvent.voiceClip);
 
             _dialogueHistory.Add($"{line.textEvent.characterSpeaker}: {line.textEvent.dialogueText}");
             UpdateDialogueHistory();
@@ -255,7 +250,7 @@ namespace FloxyDev.DialogueSystem
 
             dialogueText.text = "";
             _isSkipPressed = false;
-            foreach (char letter in line.textEvent.dialogueText)
+            foreach (var letter in line.textEvent.dialogueText)
             {
                 dialogueText.text += letter;
                 PlayTypingSound();
@@ -275,26 +270,21 @@ namespace FloxyDev.DialogueSystem
 
         private void PlayTypingSound()
         {
-            if (typingSound != null && !audioSource.isPlaying || typingPerCharacter)
-            {
+            if ((typingSound != null && !audioSource.isPlaying) || typingPerCharacter)
                 audioSource.PlayOneShot(typingSound);
-            }
         }
 
         private void ShowChoices(List<DialogueChoice> choices)
         {
-            foreach (Transform child in choicesPanel.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            foreach (Transform child in choicesPanel.transform) Destroy(child.gameObject);
 
-            foreach (DialogueChoice choice in choices)
+            foreach (var choice in choices)
             {
-                Button choiceButton = Instantiate(choiceButtonPrefab, choicesPanel.transform);
+                var choiceButton = Instantiate(choiceButtonPrefab, choicesPanel.transform);
                 choiceButton.GetComponentInChildren<TextMeshProUGUI>().text = choice.choiceText;
                 choiceButton.onClick.AddListener(() => OnChoiceSelected(choice));
             }
-            
+
             choicesPanel.SetActive(true);
         }
 
@@ -312,13 +302,11 @@ namespace FloxyDev.DialogueSystem
 
         private void UpdateDialogueHistory()
         {
-            if (dialogueHistoryText != null)
-            {
-                dialogueHistoryText.text = string.Join("\n", _dialogueHistory);
-            }
+            if (dialogueHistoryText != null) dialogueHistoryText.text = string.Join("\n", _dialogueHistory);
         }
 
-        void UpdateSpriteAnimation(ref ExpressionPerActor actorExpression, ref float timer, ref int currentFrame,
+        private void UpdateSpriteAnimation(ref ExpressionPerActor actorExpression, ref float timer,
+            ref int currentFrame,
             Image characterPortrait)
         {
             if (actorExpression.expressionSprite == null || actorExpression.expressionSprite == null ||
@@ -345,9 +333,7 @@ namespace FloxyDev.DialogueSystem
         public void ZoomToTarget(Transform target, float zoomAmount, float zoomDuration)
         {
             if (dialogueCam != null && target != null)
-            {
                 StartCoroutine(ZoomToTargetCoroutine(target, zoomAmount, zoomDuration, true));
-            }
         }
 
         private IEnumerator ZoomToTargetCoroutine(Transform target, float zoomAmount, float duration, bool toTarget)
@@ -360,7 +346,7 @@ namespace FloxyDev.DialogueSystem
             }
 
             dialogueCam.Follow = target;
-            float timer = 0f;
+            var timer = 0f;
 
             while (timer < duration)
             {
@@ -375,10 +361,7 @@ namespace FloxyDev.DialogueSystem
 
         public void ShakeCamera(float duration, bool loop)
         {
-            if (_shakeCoroutine != null)
-            {
-                StopCoroutine(_shakeCoroutine);
-            }
+            if (_shakeCoroutine != null) StopCoroutine(_shakeCoroutine);
 
             _shakeCoroutine = StartCoroutine(CameraShakeCoroutine(duration, loop));
         }
@@ -391,7 +374,7 @@ namespace FloxyDev.DialogueSystem
             _noiseProfile.AmplitudeGain = dialogueSettings.cameraModifier.shakeAmplitude;
             _noiseProfile.FrequencyGain = dialogueSettings.cameraModifier.shakeFrequency;
 
-            float elapsedTime = 0f;
+            var elapsedTime = 0f;
 
             // Shake the camera for the specified duration
             while (true)
@@ -429,7 +412,7 @@ namespace FloxyDev.DialogueSystem
         {
             camEffect.gameObject.GetComponent<Image>().color = color;
             camEffect.gameObject.SetActive(true);
-            float timer = 0f;
+            var timer = 0f;
             while (timer < duration)
             {
                 timer += Time.deltaTime;
@@ -441,7 +424,7 @@ namespace FloxyDev.DialogueSystem
         private IEnumerator DipToDefaultCoroutine(float duration, Color color)
         {
             camEffect.gameObject.GetComponent<Image>().color = color;
-            float timer = 0f;
+            var timer = 0f;
             while (timer < duration)
             {
                 timer += Time.deltaTime;
@@ -461,12 +444,12 @@ namespace FloxyDev.DialogueSystem
         {
             camEffect.gameObject.GetComponent<Image>().color = color;
             camEffect.gameObject.SetActive(true);
-            int flashAmount = (int)amount;
+            var flashAmount = (int)amount;
             while (true)
             {
                 flashAmount--;
                 // Fade In
-                float elapsedTime = 0f;
+                var elapsedTime = 0f;
                 while (elapsedTime < duration)
                 {
                     camEffect.alpha = Mathf.Lerp(0, 1, elapsedTime / duration);
@@ -500,10 +483,7 @@ namespace FloxyDev.DialogueSystem
 
         public void MoveActor(GameObject actor, Vector3 startPos, Vector3 endPos, float speed, bool useScenePos)
         {
-            if (!useScenePos)
-            {
-                actor.transform.position = startPos;
-            }
+            if (!useScenePos) actor.transform.position = startPos;
 
             StartCoroutine(MoveActorCoroutine(actor, endPos, speed));
         }
@@ -512,7 +492,7 @@ namespace FloxyDev.DialogueSystem
         {
             while (Vector3.Distance(actor.transform.position, endPos) > 0.01f)
             {
-                float step = speed * Time.deltaTime;
+                var step = speed * Time.deltaTime;
                 actor.transform.position = Vector3.MoveTowards(actor.transform.position, endPos, step);
                 yield return null;
             }

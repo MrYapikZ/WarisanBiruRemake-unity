@@ -32,7 +32,8 @@ namespace ExpiProject.MainMenu
             // Transition.instance.FadeIn(() => SceneManager.LoadScene("Guides"));
         }
 
-        private void ExitGame() {
+        private void ExitGame()
+        {
             Application.Quit();
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +14,11 @@ namespace FloxyDev.DialogueSystem
     public class DropdownAttribute : PropertyAttribute
     {
         public DropdownType Type;
-        public DropdownAttribute(DropdownType type) => Type = type;
+
+        public DropdownAttribute(DropdownType type)
+        {
+            Type = type;
+        }
     }
 
     [CustomPropertyDrawer(typeof(DropdownAttribute))]
@@ -25,16 +30,13 @@ namespace FloxyDev.DialogueSystem
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            DropdownAttribute dropdownAttr = (DropdownAttribute)attribute;
-            string[] options = dropdownAttr.Type == DropdownType.Actor ? GetActorNames() : GetExpressionNames();
+            var dropdownAttr = (DropdownAttribute)attribute;
+            var options = dropdownAttr.Type == DropdownType.Actor ? GetActorNames() : GetExpressionNames();
 
-            int currentIndex = System.Array.IndexOf(options, property.stringValue);
+            var currentIndex = Array.IndexOf(options, property.stringValue);
             currentIndex = EditorGUI.Popup(position, label.text, currentIndex, options);
 
-            if (currentIndex >= 0)
-            {
-                property.stringValue = options[currentIndex];
-            }
+            if (currentIndex >= 0) property.stringValue = options[currentIndex];
         }
 
         public static void RefreshCache()
@@ -46,10 +48,7 @@ namespace FloxyDev.DialogueSystem
 
         private static string[] GetActorNames()
         {
-            if (_cacheNeedsRefresh || _cachedActorNames == null)
-            {
-                _cachedActorNames = FetchDataFromAssets("actorNames");
-            }
+            if (_cacheNeedsRefresh || _cachedActorNames == null) _cachedActorNames = FetchDataFromAssets("actorNames");
 
             return _cachedActorNames;
         }
@@ -57,9 +56,7 @@ namespace FloxyDev.DialogueSystem
         private static string[] GetExpressionNames()
         {
             if (_cacheNeedsRefresh || _cachedExpressionNames == null)
-            {
                 _cachedExpressionNames = FetchDataFromAssets("expressionNames");
-            }
 
             return _cachedExpressionNames;
         }
@@ -67,7 +64,7 @@ namespace FloxyDev.DialogueSystem
         private static string[] FetchDataFromAssets(string field)
         {
             _cacheNeedsRefresh = false;
-            List<string> names = new List<string>();
+            var names = new List<string>();
 
             var guids = AssetDatabase.FindAssets("t:DialogueSettings");
             foreach (var guid in guids)
@@ -80,12 +77,8 @@ namespace FloxyDev.DialogueSystem
                         names.AddRange(dialogueSettings.actorNames);
 
                     if (field == "expressionNames" && dialogueSettings.expressionData != null)
-                    {
                         foreach (var expr in dialogueSettings.expressionData)
-                        {
                             names.Add(expr.expressionNames);
-                        }
-                    }
                 }
             }
 

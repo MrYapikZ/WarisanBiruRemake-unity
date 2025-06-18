@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Events;
 
 namespace FloxyDev.DialogueSystem
 {
@@ -55,7 +55,7 @@ namespace FloxyDev.DialogueSystem
         [Header("ActionEvent")] public bool isActionEvent;
         public List<CameraEffect> cameraEffects;
         public List<ActorInScenePosition> actorInScenePosition;
-        public UnityEngine.Events.UnityEvent onDialogueEvent;
+        public UnityEvent onDialogueEvent;
     }
 
 
