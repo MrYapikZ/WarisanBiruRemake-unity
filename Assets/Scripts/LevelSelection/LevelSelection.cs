@@ -16,7 +16,8 @@ namespace ExpiProject.LevelSelection
             for (int i = 0; i < levelButtonContainer.transform.childCount; i++)
             {
                 int index = i;
-                levelButtonContainer.transform.GetChild(index).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene("Level"+index));
+                levelButtonContainer.transform.GetChild(index).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene("Level"+
+                    (index+1)));
                 levelButtonContainer.transform.GetChild(index).GetComponent<Button>().interactable = false;
             }
             levelButtonContainer.transform.GetChild(0).GetComponent<Button>().interactable = true;
