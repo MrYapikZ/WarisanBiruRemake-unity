@@ -32,6 +32,7 @@ namespace ExpiProject.GameManager
             Transition.instance.FadeOut();
             Pause.instance.ResumeGame();
             
+            interactButton.interactable = false;
             pauseButtonUI.onClick.AddListener(() => Pause.instance.PauseGame());
         }
 

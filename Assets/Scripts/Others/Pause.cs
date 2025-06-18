@@ -41,7 +41,8 @@ namespace ExpiProject.Others
         
         public void ExitGame()
         {
-            SceneManager.LoadScene("LevelSelection");
+            Time.timeScale = 1;
+            Transition.instance.FadeIn(() => SceneManager.LoadScene("LevelSelection"));
             // Application.Quit();
         }
     }
