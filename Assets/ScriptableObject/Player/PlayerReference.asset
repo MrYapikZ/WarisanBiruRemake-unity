@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d121e8843aa4846a3478a11bd0fd419, type: 3}
   m_Name: PlayerReference
   m_EditorClassIdentifier: 
-  soMaxMovementSpeed: 15
+  soMaxMovementSpeed: 10
   soAccelerationMultiplier: 120
-  soDecelerationMultiplier: 30
+  soDecelerationMultiplier: 50

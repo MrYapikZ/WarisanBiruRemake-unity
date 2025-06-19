@@ -182,7 +182,6 @@ MonoBehaviour:
   puzzleAssets: {fileID: 11400000, guid: 845a5602ff668431d8e8979775a3d92b, type: 2}
   puzzlePartContainer: {fileID: 307896937}
   puzzleBoardContainer: {fileID: 1038925363}
-  winScreen: {fileID: 0}
 --- !u!4 &207711038
 Transform:
   m_ObjectHideFlags: 0

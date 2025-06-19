@@ -1,29 +1,36 @@
+using System;
 using System.Collections.Generic;
+using ExpiProject.Others;
 using ExpiProject.PuzzleMinigame.SO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace ExpiProject.PuzzleMinigame
 {
     public class PuzzleManager : MonoBehaviour
     {
+        public static PuzzleManager instance;
+        
         [SerializeField] private PuzzleAssetsScriptableObject  puzzleAssets;
         [SerializeField] private GameObject puzzlePartContainer;
         [SerializeField] private GameObject puzzleBoardContainer;
-        [SerializeField] private GameObject winScreen;
         private int currentPoints;
 
         private int pointToWin;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         private void Start()
         {
             pointToWin = puzzlePartContainer.transform.childCount;
             RandomizeTarget();
-        }
-
-        private void Update()
-        {
-            // if (currentPoints >= pointToWin) winScreen.SetActive(true);
+            
+            Transition.instance.FadeOut();
         }
 
         private void RandomizeTarget()
@@ -55,7 +62,14 @@ namespace ExpiProject.PuzzleMinigame
 
         public void AddPoint()
         {
-            currentPoints++;
+            currentPoints = Mathf.Clamp(currentPoints + 1, 0, pointToWin);
+            if (currentPoints >= pointToWin)
+            {
+                var score = GameManager.GameManager.instance.scoreData.lvlScores[GameManager.GameManager.instance.level];
+                score.isGameFinished = true;
+                GameManager.GameManager.instance.scoreData.lvlScores[GameManager.GameManager.instance.level] = score;
+                Transition.instance.FadeIn(() => SceneManager.LoadScene("LevelSelection")); 
+            }
         }
     }
 }

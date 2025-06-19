@@ -24,7 +24,7 @@ namespace ExpiProject.GameManager
         [Header("Game References")]
         public int level;
 
-        [SerializeField] private ScoreDataScriptableObject scoreData;
+        public ScoreDataScriptableObject scoreData;
 
         [SerializeField] private GameObject[] npcObjects;
 
@@ -66,15 +66,8 @@ namespace ExpiProject.GameManager
             screenUI.SetActive(false);
             var mainCamera = Camera.main;
             if (mainCamera != null) mainCamera.enabled = false;
-            SceneManager.LoadScene("PuzzleMinigame", LoadSceneMode.Additive);
+            Transition.instance.FadeIn(() => SceneManager.LoadScene("PuzzleMinigame", LoadSceneMode.Additive)); 
             isPuzzleEnable = true;
-            StartCoroutine(ApplyLevel());
-        }
-
-        private IEnumerator ApplyLevel()
-        {
-            yield return new WaitUntil(() => SceneManager.GetSceneByName("PuzzleMinigame").isLoaded);
-            // GameObject.Find("PuzzleController").GetComponent<PuzzleController>().level = Level;
         }
 
         #endregion

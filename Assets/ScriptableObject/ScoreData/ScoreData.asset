@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lvlScores:
   - name: Level1
-    isGameFinished: 0
+    isGameFinished: 1
     quizPoint: 01010101

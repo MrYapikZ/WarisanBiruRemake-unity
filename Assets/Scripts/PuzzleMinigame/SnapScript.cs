@@ -50,7 +50,7 @@ namespace ExpiProject.PuzzleMinigame
                             transform.position = new Vector2(targetBoard.position.x, targetBoard.position.y);
                             locked = true;
                             sprite.sortingOrder = 1;
-                            GameObject.Find("GameControls").GetComponent<PuzzleManager>().AddPoint();
+                            PuzzleManager.instance.AddPoint();
                         }
                         else
                         {
