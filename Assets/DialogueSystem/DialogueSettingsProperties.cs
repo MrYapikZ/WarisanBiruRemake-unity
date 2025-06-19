@@ -21,6 +21,7 @@ namespace FloxyDev.DialogueSystem
         }
     }
 
+    #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(DropdownAttribute))]
     public class OptimizedDropdownDrawer : PropertyDrawer
     {
@@ -85,6 +86,7 @@ namespace FloxyDev.DialogueSystem
             return names.ToArray();
         }
     }
+    #endif
 
 
     #region CameraAction

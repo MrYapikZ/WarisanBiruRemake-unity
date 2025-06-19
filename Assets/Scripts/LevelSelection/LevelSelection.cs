@@ -1,3 +1,4 @@
+using ExpiProject.GameManager;
 using ExpiProject.GameManager.SO;
 using ExpiProject.Others;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace ExpiProject.LevelSelection
 
         private void Start()
         {
-            Transition.instance.FadeOut();
+            SaveLoadData.JsonLoad(scoreData);
 
             for (var i = 0; i < levelButtonContainer.transform.childCount; i++)
             {
@@ -33,6 +34,8 @@ namespace ExpiProject.LevelSelection
 
             levelButtonContainer.transform.GetChild(0).GetComponent<Button>().interactable = true;
             backButton.onClick.AddListener(() => Transition.instance.FadeIn(() => SceneManager.LoadScene("MainMenu")));
+            
+            Transition.instance.FadeOut();
         }
     }
 }

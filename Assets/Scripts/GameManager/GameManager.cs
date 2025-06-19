@@ -1,4 +1,3 @@
-using System.Collections;
 using ExpiProject.GameManager.SO;
 using ExpiProject.Npc;
 using ExpiProject.Others;
@@ -21,8 +20,7 @@ namespace ExpiProject.GameManager
         [SerializeField] private Button pauseButtonUI;
         [SerializeField] private TextMeshProUGUI scoreText;
 
-        [Header("Game References")]
-        public int level;
+        [Header("Game References")] public int level;
 
         public ScoreDataScriptableObject scoreData;
 
@@ -43,7 +41,12 @@ namespace ExpiProject.GameManager
 
             interactButton.interactable = false;
             pauseButtonUI.onClick.AddListener(() => Pause.instance.PauseGame());
-            scoreText.text = "0/" + scoreData.lvlScores[level].quizPoint.Length;
+
+            var score = 0;
+            for (var i = 0; i < scoreData.lvlScores[level].quizPoint.Length; i++)
+                if (scoreData.lvlScores[level].quizPoint[i])
+                    score++;
+            scoreText.text = score + "/" + scoreData.lvlScores[level].quizPoint.Length;
         }
 
         #region Scoring
@@ -57,17 +60,21 @@ namespace ExpiProject.GameManager
                 {
                     score++;
                     scoreText.text = score + "/" + scoreData.lvlScores[level].quizPoint.Length;
+                    if (score <= scoreData.lvlScores[level].quizPoint.Length - 1) SaveLoadData.JsonSave(scoreData);
                     if (score == scoreData.lvlScores[level].quizPoint.Length) OpenPuzzle();
                 }
         }
 
         private void OpenPuzzle()
         {
-            screenUI.SetActive(false);
-            var mainCamera = Camera.main;
-            if (mainCamera != null) mainCamera.enabled = false;
-            Transition.instance.FadeIn(() => SceneManager.LoadScene("PuzzleMinigame", LoadSceneMode.Additive)); 
-            isPuzzleEnable = true;
+            if (!isPuzzleEnable)
+            {
+                screenUI.SetActive(false);
+                var mainCamera = Camera.main;
+                if (mainCamera != null) mainCamera.enabled = false;
+                Transition.instance.FadeIn(() => SceneManager.LoadScene("PuzzleMinigame", LoadSceneMode.Additive));
+                isPuzzleEnable = true;
+            }
         }
 
         #endregion
