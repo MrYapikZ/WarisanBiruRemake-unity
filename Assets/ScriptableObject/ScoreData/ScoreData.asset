@@ -16,3 +16,15 @@ MonoBehaviour:
   - name: Level1
     isGameFinished: 1
     quizPoint: 01010101
+  - name: Level2
+    isGameFinished: 0
+    quizPoint: 00000000
+  - name: Level3
+    isGameFinished: 0
+    quizPoint: 00000000
+  - name: Level3
+    isGameFinished: 0
+    quizPoint: 00000000
+  - name: Level5
+    isGameFinished: 0
+    quizPoint: 00000000

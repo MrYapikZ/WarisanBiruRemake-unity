@@ -511,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd86a23dd5124f419a1acc09e687ed2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreData: {fileID: 11400000, guid: 9b5c58f75268e4d6590da22dc8939704, type: 2}
   levelButtonContainer: {fileID: 833268094}
   backButton: {fileID: 1704147918}
 --- !u!1 &640692428
